@@ -1,6 +1,7 @@
 package com.example.ilocanospeech_to_texttranslatorapp.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -35,6 +36,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import android.os.AsyncTask;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+
 
 public class HomePage extends Fragment {
 
@@ -64,7 +74,8 @@ public class HomePage extends Fragment {
     // Text-to-Text variables
     private EditText editTextIn;
     private TextView engT, iloT;
-    private String api = "";
+    private static final String GOOGLE_TRANSLATE_API_URL = "https://translation.googleapis.com/language/translate/v2";
+    private String api = "AIzaSyBAqkkzBG9Be3-804IcD34L3nr0MHWFWn0";
     private Translator translator;
 
     @Nullable
@@ -104,35 +115,95 @@ public class HomePage extends Fragment {
         engT = view.findViewById(R.id.eng_text);
         iloT = view.findViewById(R.id.ilo_text);
 
-        // Set up translation model (English to Ilocano)
-        TranslatorOptions options = new TranslatorOptions.Builder()
-                .setSourceLanguage(TranslateLanguage.ENGLISH)
-                .setTargetLanguage(TranslateLanguage.TAGALOG)
-                .build();
 
-        translator = Translation.getClient(options);
+        // Set up text change listener to trigger translation
+        editTextIn.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-        translator.downloadModelIfNeeded()
-                .addOnSuccessListener(unused -> {
-                    // Enable input translation after model download
-                    editTextIn.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    editTextIn.setTextColor(Color.BLACK);
+                    engT.setText(s.toString());
+                    engT.setTextColor(Color.BLACK);
+                    iloT.setTextColor(Color.BLACK);
+                    asyncTranslateText(s.toString()); // Call API-based translation
+                } else {
+                    // Reset to placeholder texts when input is cleared
+                    editTextIn.setTextColor(Color.GRAY);
+                    engT.setText("Inputted text here.");
+                    iloT.setText("Translated text here.");
+                    engT.setTextColor(Color.GRAY);
+                    iloT.setTextColor(Color.GRAY);
+                }
+            }
 
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            engT.setText(s.toString()); // Set input text as English text
-                            translateText(s.toString());
-                        }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
 
-                        @Override
-                        public void afterTextChanged(Editable s) {}
-                    });
-                })
-                .addOnFailureListener(e -> iloT.setText("Error downloading translation model"));
 
         return view;
     }
+
+
+    private void asyncTranslateText(String input) {
+        if (input.isEmpty()) {
+            iloT.setText("");
+            return;
+        }
+
+        // Execute translation in a background thread
+        new TranslateTask().execute(input);
+    }
+
+    private class TranslateTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... texts) {
+            String inputText = texts[0];
+            try {
+                URL url = new URL(GOOGLE_TRANSLATE_API_URL + "?key=" + api);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                conn.setDoOutput(true);
+
+                // JSON payload for translation request
+                String jsonInputString = "{ \"q\": \"" + inputText + "\", \"source\": \"en\", \"target\": \"ilo\", \"format\": \"text\" }";
+
+                try (OutputStream os = conn.getOutputStream()) {
+                    byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+                    os.write(input, 0, input.length);
+                }
+
+                // Read the response
+                StringBuilder response = new StringBuilder();
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
+                    String responseLine;
+                    while ((responseLine = br.readLine()) != null) {
+                        response.append(responseLine.trim());
+                    }
+                }
+
+                // Parse JSON response
+                JSONObject jsonResponse = new JSONObject(response.toString());
+                JSONArray translations = jsonResponse.getJSONObject("data").getJSONArray("translations");
+                return translations.getJSONObject(0).getString("translatedText");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Translation error";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String translatedText) {
+            iloT.setText(translatedText);
+        }
+
+    }
+
 
     // Recording calls
     private void startRecording() {
@@ -144,27 +215,6 @@ public class HomePage extends Fragment {
 
     private void stopRecording() {
         mRecord.stop();
-    }
-
-    // Translate input text
-    private void translateText(String input) {
-        if (input.isEmpty()) {
-            iloT.setText("");
-            engT.setTextColor(getResources().getColor(R.color.black)); // Ensure default color
-            iloT.setTextColor(getResources().getColor(R.color.black));
-            editTextIn.setTextColor(getResources().getColor(R.color.black));
-            return;
-        }
-        engT.setTextColor(getResources().getColor(R.color.black)); // Change font color to black
-        translator.translate(input)
-                .addOnSuccessListener(translatedText -> {
-                    iloT.setText(translatedText);
-                    iloT.setTextColor(getResources().getColor(R.color.black)); // Change font color to black
-                })
-                .addOnFailureListener(e -> iloT.setText("Translation error"));
-        translator.translate(input)
-                .addOnSuccessListener(translatedText -> iloT.setText(translatedText)) // Set Ilocano text
-                .addOnFailureListener(e -> iloT.setText("Translation error"));
     }
 
     @Override

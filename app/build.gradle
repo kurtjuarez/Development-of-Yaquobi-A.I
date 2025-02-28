@@ -51,6 +51,7 @@ dependencies {
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
     implementation libs.google.cloud.translate.v2240
+    implementation libs.google.cloud.translate
 
     implementation libs.ffmpeg.full
     implementation libs.tensorflow.lite
