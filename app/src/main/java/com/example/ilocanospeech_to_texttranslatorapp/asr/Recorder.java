@@ -10,6 +10,7 @@ import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
+import com.example.ilocanospeech_to_texttranslatorapp.fragments.HomePage;
 import com.example.ilocanospeech_to_texttranslatorapp.utils.WaveUtil;
 
 import java.io.ByteArrayOutputStream;

@@ -1,10 +1,12 @@
 package com.example.ilocanospeech_to_texttranslatorapp.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +16,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.ilocanospeech_to_texttranslatorapp.R;
 import com.example.ilocanospeech_to_texttranslatorapp.asr.Recorder;
 import com.example.ilocanospeech_to_texttranslatorapp.asr.Whisper;
+import com.example.ilocanospeech_to_texttranslatorapp.utils.WaveUtil;
 import com.google.mlkit.nl.translate.TranslateLanguage;
 import com.google.mlkit.nl.translate.Translation;
 import com.google.mlkit.nl.translate.Translator;
@@ -69,6 +73,31 @@ public class HomePage extends Fragment {
         super.onCreate(savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
+        // Microphone Button
+        micBut = view.findViewById(R.id.off_record_button);
+        micBut.setOnClickListener(v -> {
+            if(mRecord != null && mRecord.isInProgress()) {
+                Log.d(TAG, "Recording is in progress... stopping...");
+                stopRecording();
+            } else {
+                Log.d(TAG, "Start recording...");
+                startRecording();
+            }
+        });
+
+        // Audio Record Functionality
+        mRecord = new Recorder(requireContext());
+        mRecord.setListener(new Recorder.RecorderListener() {
+            @Override
+            public void onUpdateReceived(String message) {
+                Log.d(TAG, "Update is received, Message: " + message);
+            }
+
+            @Override
+            public void onDataReceived(float[] samples) {
+                mWhisper.writeBuffer(samples);
+            }
+        });
 
         // Initialize UI components
         editTextIn = view.findViewById(R.id.editTextInput);
@@ -105,6 +134,18 @@ public class HomePage extends Fragment {
         return view;
     }
 
+    // Recording calls
+    private void startRecording() {
+
+        File waveFile= new File(sdcardDataFolder, WaveUtil.RECORDING_FILE);
+        mRecord.setFilePath(waveFile.getAbsolutePath());
+        mRecord.start();
+    }
+
+    private void stopRecording() {
+        mRecord.stop();
+    }
+
     // Translate input text
     private void translateText(String input) {
         if (input.isEmpty()) {
@@ -133,6 +174,7 @@ public class HomePage extends Fragment {
             translator.close(); // Clean up translator instance
         }
     }
+
     static class SharedResource {
         // Synchronized method for Thread 1 to wait for a signal with a timeout
         public synchronized boolean waitForSignalWithTimeout(long timeoutMillis) {
@@ -160,4 +202,5 @@ public class HomePage extends Fragment {
             notify();  // Notifies the waiting thread
         }
     }
+
 }
