@@ -1,5 +1,7 @@
 [versions]
 agp = "8.8.1"
+googleCloudTranslate = "1.27.0"
+googleCloudTranslateVersion = "2.24.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -7,8 +9,13 @@ appcompat = "1.7.0"
 material = "1.12.0"
 activity = "1.10.0"
 constraintlayout = "2.1.4"
+translate = "17.0.3"
+tensorflowLite = "2.14.0"
+tensorflowLiteSupport = "0.4.4"
 
 [libraries]
+google-cloud-translate = { module = "com.google.cloud:google-cloud-translate", version.ref = "googleCloudTranslate" }
+google-cloud-translate-v2240 = { module = "com.google.cloud:google-cloud-translate", version.ref = "googleCloudTranslateVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -16,6 +23,11 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+translate = { module = "com.google.mlkit:translate", version.ref = "translate" }
+tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLite" }
+tensorflow-lite-support = { module = "org.tensorflow:tensorflow-lite-support", version.ref = "tensorflowLiteSupport" }
+ffmpeg-full = { module = "com.arthenica:ffmpeg-kit-full-gpl", version = "6.0-2.LTS" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

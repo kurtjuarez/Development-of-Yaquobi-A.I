@@ -34,7 +34,7 @@
             android:background="@drawable/rounded_text_layout"
             android:layout_marginStart="10dp">
             <EditText
-                android:id="@+id/editTextText5"
+                android:id="@+id/editTextInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
@@ -42,7 +42,7 @@
                 android:layout_marginEnd="5dp"
                 android:ems="10"
                 android:inputType="text"
-                android:text="@string/enter_text" />
+                android:hint="Enter text here..." />
         </RelativeLayout>
         <!-- Speech text -->
         <RelativeLayout
@@ -54,6 +54,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="15dp"
             android:background="@drawable/rounded_off_mic_layout">
+            <!-- Must be changed to button -->
             <ImageView
                 android:padding="8dp"
                 android:id="@+id/off_record_button"
@@ -99,6 +100,7 @@
                 android:layout_below="@+id/english_text"
                 android:layout_marginStart="5dp"/>
             <TextView
+                android:id="@+id/eng_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/english_text"
@@ -126,6 +128,7 @@
                 android:layout_below="@+id/ilocano_text"
                 android:layout_marginStart="5dp"/>
             <TextView
+                android:id="@+id/ilo_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/ilocano_text"
