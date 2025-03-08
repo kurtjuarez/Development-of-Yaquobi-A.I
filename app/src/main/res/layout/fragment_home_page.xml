@@ -42,7 +42,7 @@
                 android:layout_marginEnd="5dp"
                 android:ems="10"
                 android:inputType="text"
-                android:hint="Enter text here..." />
+                android:hint="@string/enter_text" />
         </RelativeLayout>
         <!-- Speech text -->
         <RelativeLayout
