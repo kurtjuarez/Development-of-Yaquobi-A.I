@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.ilocanospeech_to_texttranslatorapp.R;
 import com.example.ilocanospeech_to_texttranslatorapp.adapter.RecyclerAdapter;
+import com.example.ilocanospeech_to_texttranslatorapp.dbh.DBTranslated;
 import com.example.ilocanospeech_to_texttranslatorapp.model.RecyclerModel;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class HistoryPage extends Fragment {
     private RecyclerView recyclerView;
     private List<RecyclerModel> recyclerModels = new ArrayList<>();
     private RecyclerAdapter recyclerAdapter;
+    private DBTranslated dbTranslated;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -26,16 +28,18 @@ public class HistoryPage extends Fragment {
         View view = inflater.inflate(R.layout.fragment_history_page, container, false);
 
         recyclerView = view.findViewById(R.id.recycler_view_name);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Dummy contents of the RecyclerView items
-        recyclerModels.add(new RecyclerModel("12-12-12", "12:12:12", "Inputted text here.", "Translated text here."));
-        recyclerModels.add(new RecyclerModel("12-12-12", "13:13:13", "Inputted text here.", "Translated text here."));
-        recyclerModels.add(new RecyclerModel("12-12-12", "14:14:14", "Inputted text here.", "Translated text here."));
+        dbTranslated = new DBTranslated(getContext());
+
+        // Fetch translations from the database
+        List<RecyclerModel> recyclerModels = dbTranslated.getAllTranslated();
 
         recyclerAdapter = new RecyclerAdapter(getContext(), recyclerModels);
-
         recyclerView.setAdapter(recyclerAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Notify adapter that data has changed
+        recyclerAdapter.notifyDataSetChanged();
 
         return view;
     }

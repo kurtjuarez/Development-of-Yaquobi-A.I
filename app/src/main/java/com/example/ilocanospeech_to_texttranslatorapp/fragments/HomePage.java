@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +24,9 @@ import androidx.fragment.app.Fragment;
 import com.example.ilocanospeech_to_texttranslatorapp.R;
 import com.example.ilocanospeech_to_texttranslatorapp.asr.Recorder;
 import com.example.ilocanospeech_to_texttranslatorapp.asr.Whisper;
+import com.example.ilocanospeech_to_texttranslatorapp.dbh.DBTranslated;
 import com.example.ilocanospeech_to_texttranslatorapp.utils.WaveUtil;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -38,6 +41,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 
 public class HomePage extends Fragment {
 
@@ -66,19 +73,42 @@ public class HomePage extends Fragment {
     private static final String GOOGLE_TRANSLATE_API_URL = "https://translation.googleapis.com/language/translate/v2";
     private final String api = "AIzaSyBAqkkzBG9Be3-804IcD34L3nr0MHWFWn0";
 
+    // Saved History variables
+    private FloatingActionButton transCopy;
+    private DBTranslated dbHandler;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
 
+        // Copy files
         sdcardDataFolder = requireActivity().getExternalFilesDir(null);
         copyAssetsToSdcard(requireContext(), sdcardDataFolder, EXTENSIONS_TO_COPY);
 
         selectedTfliteFile = new File(sdcardDataFolder, DEFAULT_MODEL_TO_USE);
         selectedWaveFile = new File(sdcardDataFolder, DEFAULT_WAV_FILE);
-
+        // Used model
         initModel(selectedTfliteFile);
 
+        // dbhandler class to pass the contents
+        dbHandler = new DBTranslated(requireContext());
+        // Save History Button
+        transCopy = view.findViewById(R.id.transCopy);
+        transCopy.setOnClickListener(v -> {
+            String englishText = engT.getText().toString();
+            String ilocanoText = iloT.getText().toString();
+            String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+
+            if (!englishText.equals("Inputted text here.") && !ilocanoText.equals("Translated text here.")) {
+                dbHandler.addTranslatedText(englishText, ilocanoText, timestamp);
+                Toast.makeText(requireContext(), "Saved to history", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(requireContext(), "No valid translation to save", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Microphone Button
         micBut = view.findViewById(R.id.off_record_button);
         micBut.setOnClickListener(v -> {
             if (mRecord != null && mRecord.isInProgress()) {
