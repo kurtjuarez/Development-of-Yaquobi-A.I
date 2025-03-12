@@ -1,7 +1,9 @@
 package com.example.ilocanospeech_to_texttranslatorapp.fragments;
 
 import android.content.Context;
+
 import android.content.res.AssetManager;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,6 +40,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import android.os.AsyncTask;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -71,6 +83,7 @@ public class HomePage extends Fragment {
     private EditText editTextIn;
     private TextView engT, iloT;
     private static final String GOOGLE_TRANSLATE_API_URL = "https://translation.googleapis.com/language/translate/v2";
+
     private final String api = "AIzaSyBAqkkzBG9Be3-804IcD34L3nr0MHWFWn0";
 
     // Saved History variables
@@ -164,6 +177,7 @@ public class HomePage extends Fragment {
 
         return view;
     }
+
 
     private void initModel(File modelFile) {
         boolean isMultilingualModel = !modelFile.getName().endsWith(ENGLISH_ONLY_MODEL_EXTENSION);
@@ -269,3 +283,4 @@ public class HomePage extends Fragment {
         }
     }
 }
+
