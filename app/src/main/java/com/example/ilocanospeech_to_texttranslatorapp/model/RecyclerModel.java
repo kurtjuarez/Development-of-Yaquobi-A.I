@@ -6,7 +6,7 @@ public class RecyclerModel {
     private String english_text;
     private String ilocano_text;
 
-    public RecyclerModel(String timestamp, String ilocano_text, String english_text){
+    public RecyclerModel(String timestamp, String english_text, String ilocano_text){
         this.timestamp = timestamp;
         this.english_text = english_text;
         this.ilocano_text = ilocano_text;
