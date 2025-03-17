@@ -2,4 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="off_mic">#009D88</color>
+    <color name="on_mic">#00D1B4</color>
 </resources>

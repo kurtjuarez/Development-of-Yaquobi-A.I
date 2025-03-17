@@ -1,10 +1,17 @@
 package com.example.ilocanospeech_to_texttranslatorapp.fragments;
 
+import static android.graphics.Color.*;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import android.content.res.AssetManager;
 
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,10 +23,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.ilocanospeech_to_texttranslatorapp.R;
@@ -43,6 +52,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import android.os.AsyncTask;
+import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -61,7 +72,7 @@ public class HomePage extends Fragment {
     private static final String ENGLISH_ONLY_VOCAB_FILE = "filters_vocab_en.bin";
     private static final String MULTILINGUAL_VOCAB_FILE = "filters_vocab_multilingual.bin";
     private static final String[] EXTENSIONS_TO_COPY = {"tflite", "bin", "wav", "pcm"};
-
+    private RelativeLayout mFrame;
     // Speech-to-Text variables
     private ImageView micBut;
     private Recorder mRecord;
@@ -79,6 +90,7 @@ public class HomePage extends Fragment {
 
     private final String api = "AIzaSyBAqkkzBG9Be3-804IcD34L3nr0MHWFWn0";
 
+    @SuppressLint("ResourceType")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -92,7 +104,9 @@ public class HomePage extends Fragment {
 
         initModel(selectedTfliteFile);
 
+        mFrame = view.findViewById(R.id.mic_id);
         micBut = view.findViewById(R.id.off_record_button);
+
         micBut.setOnClickListener(v -> {
             if (mRecord != null && mRecord.isInProgress()) {
                 stopRecording();
@@ -128,14 +142,14 @@ public class HomePage extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
                     engT.setText(s.toString());
-                    engT.setTextColor(Color.BLACK);
-                    iloT.setTextColor(Color.BLACK);
-                    editTextIn.setTextColor(Color.BLACK);
+                    engT.setTextColor(BLACK);
+                    iloT.setTextColor(BLACK);
+                    editTextIn.setTextColor(BLACK);
                     asyncTranslateText(s.toString());
                 } else {
-                    engT.setTextColor(Color.GRAY);
-                    iloT.setTextColor(Color.GRAY);
-                    editTextIn.setTextColor(Color.GRAY);
+                    engT.setTextColor(GRAY);
+                    iloT.setTextColor(GRAY);
+                    editTextIn.setTextColor(GRAY);
                     engT.setText("Inputted text here.");
                     iloT.setText("Translated text here.");
                 }
@@ -169,16 +183,37 @@ public class HomePage extends Fragment {
         });
     }
 
+
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void startRecording() {
         File waveFile = new File(sdcardDataFolder, WaveUtil.RECORDING_FILE);
         mRecord.setFilePath(waveFile.getAbsolutePath());
         mRecord.start();
+        Drawable micBackgroundDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_off_mic_layout);
+
+        if (micBackgroundDrawable instanceof GradientDrawable) {
+            GradientDrawable gradientDrawable = (GradientDrawable) micBackgroundDrawable;
+
+            gradientDrawable.setColor(ContextCompat.getColor(requireContext(), R.color.on_mic));
+
+            mFrame.setBackground(gradientDrawable);
+            Toast.makeText(requireContext(), "Recording...", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void stopRecording() {
         mRecord.stop();
         if (selectedWaveFile != null) {
             startTranscription(selectedWaveFile.getAbsolutePath());
+            Drawable micBackgroundDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_off_mic_layout);
+
+            if (micBackgroundDrawable instanceof GradientDrawable) {
+                GradientDrawable gradientDrawable = (GradientDrawable) micBackgroundDrawable;
+
+                gradientDrawable.setColor(ContextCompat.getColor(requireContext(), R.color.off_mic));
+
+                mFrame.setBackground(gradientDrawable);
+            }
         }
     }
 
