@@ -138,6 +138,17 @@
                 android:layout_marginBottom="10dp"
                 android:text="@string/output_text"
                 android:textSize="12sp"/>
+
         </RelativeLayout>
     </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/transCopy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/copy"
+        android:src="@android:drawable/ic_menu_save" />
+
 </RelativeLayout>

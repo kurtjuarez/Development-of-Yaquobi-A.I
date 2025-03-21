@@ -14,4 +14,5 @@
     <string name="phone_number">+639123456789</string>
     <string name="email_address">emailaddress@gmail.com</string>
     <string name="facebook">Yaquobi A.I</string>
+    <string name="copy">Copy</string>
 </resources>

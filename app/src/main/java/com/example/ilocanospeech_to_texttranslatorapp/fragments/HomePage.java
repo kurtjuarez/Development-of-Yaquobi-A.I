@@ -1,10 +1,13 @@
 package com.example.ilocanospeech_to_texttranslatorapp.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import android.content.res.AssetManager;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,16 +19,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.ilocanospeech_to_texttranslatorapp.R;
 import com.example.ilocanospeech_to_texttranslatorapp.asr.Recorder;
 import com.example.ilocanospeech_to_texttranslatorapp.asr.Whisper;
+import com.example.ilocanospeech_to_texttranslatorapp.dbh.DBTranslated;
 import com.example.ilocanospeech_to_texttranslatorapp.utils.WaveUtil;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -50,6 +58,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 
 public class HomePage extends Fragment {
 
@@ -61,6 +73,7 @@ public class HomePage extends Fragment {
     private static final String ENGLISH_ONLY_VOCAB_FILE = "filters_vocab_en.bin";
     private static final String MULTILINGUAL_VOCAB_FILE = "filters_vocab_multilingual.bin";
     private static final String[] EXTENSIONS_TO_COPY = {"tflite", "bin", "wav", "pcm"};
+    private RelativeLayout mFrame;
 
     // Speech-to-Text variables
     private ImageView micBut;
@@ -79,19 +92,43 @@ public class HomePage extends Fragment {
 
     private final String api = "AIzaSyBAqkkzBG9Be3-804IcD34L3nr0MHWFWn0";
 
+    // Saved History variables
+    private FloatingActionButton transCopy;
+    private DBTranslated dbHandler;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
 
+        // Copy files
         sdcardDataFolder = requireActivity().getExternalFilesDir(null);
         copyAssetsToSdcard(requireContext(), sdcardDataFolder, EXTENSIONS_TO_COPY);
 
         selectedTfliteFile = new File(sdcardDataFolder, DEFAULT_MODEL_TO_USE);
         selectedWaveFile = new File(sdcardDataFolder, DEFAULT_WAV_FILE);
-
+        // Used model
         initModel(selectedTfliteFile);
 
+        // dbhandler class to pass the contents
+        dbHandler = new DBTranslated(requireContext());
+        // Save History Button
+        transCopy = view.findViewById(R.id.transCopy);
+        transCopy.setOnClickListener(v -> {
+            String englishText = engT.getText().toString();
+            String ilocanoText = iloT.getText().toString();
+            String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+
+            if (!englishText.equals("Inputted text here.") && !ilocanoText.equals("Translated text here.")) {
+                dbHandler.addTranslatedText(englishText, ilocanoText, timestamp);
+                Toast.makeText(requireContext(), "Saved to history", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(requireContext(), "No valid translation to save", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Microphone Button
+        mFrame = view.findViewById(R.id.mic_id);
         micBut = view.findViewById(R.id.off_record_button);
         micBut.setOnClickListener(v -> {
             if (mRecord != null && mRecord.isInProgress()) {
@@ -169,16 +206,36 @@ public class HomePage extends Fragment {
         });
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void startRecording() {
         File waveFile = new File(sdcardDataFolder, WaveUtil.RECORDING_FILE);
         mRecord.setFilePath(waveFile.getAbsolutePath());
         mRecord.start();
+        Drawable micBackgroundDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_off_mic_layout);
+
+        if (micBackgroundDrawable instanceof GradientDrawable) {
+            GradientDrawable gradientDrawable = (GradientDrawable) micBackgroundDrawable;
+
+            gradientDrawable.setColor(ContextCompat.getColor(requireContext(), R.color.on_mic));
+
+            mFrame.setBackground(gradientDrawable);
+            Toast.makeText(requireContext(), "Recording...", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void stopRecording() {
         mRecord.stop();
         if (selectedWaveFile != null) {
             startTranscription(selectedWaveFile.getAbsolutePath());
+            Drawable micBackgroundDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_off_mic_layout);
+
+            if (micBackgroundDrawable instanceof GradientDrawable) {
+                GradientDrawable gradientDrawable = (GradientDrawable) micBackgroundDrawable;
+
+                gradientDrawable.setColor(ContextCompat.getColor(requireContext(), R.color.off_mic));
+
+                mFrame.setBackground(gradientDrawable);
+            }
         }
     }
 

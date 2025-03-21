@@ -13,27 +13,18 @@
         android:padding="10dp">
         
         <TextView
-            android:id="@+id/date_id"
+            android:id="@+id/timestamp_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="12-12-12"
-            android:textColor="@color/black"/>
-
-        <TextView
-            android:id="@+id/time_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/date_id"
-            android:layout_marginStart="40dp"
-            android:text="12:12:12"
             android:textColor="@color/black"/>
         <FrameLayout
             android:id="@+id/line_date_id"
             android:layout_width="165dp"
             android:layout_height="2dp"
             android:background="#00796B"
-            android:layout_below="@id/date_id"
+            android:layout_below="@id/timestamp_id"
             android:layout_marginStart="5dp"/>
 
         <TextView

@@ -37,8 +37,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.date_id.setText(recyclerModels.get(position).getDate());
-        holder.time_id.setText(recyclerModels.get(position).getTime());
+        holder.timestamp_id.setText(recyclerModels.get(position).getTimestamp());
         holder.english_text_id.setText(recyclerModels.get(position).getEnglish_text());
         holder.ilocano_text_id.setText(recyclerModels.get(position).getIlocano_text());
     }
@@ -50,12 +49,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView date_id, time_id, english_text_id, ilocano_text_id;
+        private TextView timestamp_id, english_text_id, ilocano_text_id;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            date_id = itemView.findViewById(R.id.date_id);
-            time_id = itemView.findViewById(R.id.time_id);
+            timestamp_id = itemView.findViewById(R.id.timestamp_id);
             english_text_id = itemView.findViewById(R.id.english_text_id);
             ilocano_text_id = itemView.findViewById(R.id.ilocano_text_id);
 
