@@ -1,31 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardBackgroundColor="#A5D6A7"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="20dp">
-    
+    android:layout_marginTop="20dp"
+    app:cardBackgroundColor="#A5D6A7">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#A5D6A7"
         android:padding="10dp">
-        
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/delete_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:backgroundTint="@color/Color1"
+            android:src="@drawable/baseline_delete_forever_24"
+            app:fabCustomSize="50dp">
+        </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
         <TextView
             android:id="@+id/timestamp_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="12-12-12"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
+
         <FrameLayout
             android:id="@+id/line_date_id"
             android:layout_width="165dp"
             android:layout_height="2dp"
-            android:background="#00796B"
             android:layout_below="@id/timestamp_id"
-            android:layout_marginStart="5dp"/>
+            android:layout_marginStart="5dp"
+            android:background="#00796B" />
 
         <TextView
             android:id="@+id/english_title_id"
@@ -35,67 +46,66 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:text="English"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
         <FrameLayout
             android:id="@+id/line_english_id"
             android:layout_width="55dp"
             android:layout_height="2dp"
-            android:background="#00796B"
             android:layout_below="@id/english_title_id"
-            android:layout_marginStart="5dp"/>
+            android:layout_marginStart="5dp"
+            android:background="#00796B" />
 
         <TextView
             android:id="@+id/ilocano_title_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/line_date_id"
-            android:layout_toEndOf="@id/middle_line_history_id"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
+            android:layout_toEndOf="@id/middle_line_history_id"
             android:text="Ilocano"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
         <FrameLayout
             android:id="@+id/line_ilocano_id"
             android:layout_width="55dp"
             android:layout_height="2dp"
-            android:background="#00796B"
             android:layout_below="@id/ilocano_title_id"
+            android:layout_marginStart="5dp"
             android:layout_toEndOf="@id/middle_line_history_id"
-            android:layout_marginStart="5dp"/>
+            android:background="#00796B" />
 
         <TextView
             android:id="@+id/english_text_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/english_title_id"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="5dp"
             android:layout_toStartOf="@id/middle_line_history_id"
-            android:layout_marginTop="10dp"
             android:text="Inputted text here."
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/ilocano_text_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/ilocano_title_id"
-            android:layout_toEndOf="@id/middle_line_history_id"
             android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/middle_line_history_id"
             android:text="Translated text here."
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
         <FrameLayout
             android:id="@+id/middle_line_history_id"
             android:layout_width="2dp"
             android:layout_height="wrap_content"
-            android:background="#00796B"
-            android:layout_centerHorizontal="true"
             android:layout_below="@id/line_date_id"
             android:layout_alignBottom="@id/english_text_id"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
-            />
+            android:background="#00796B" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

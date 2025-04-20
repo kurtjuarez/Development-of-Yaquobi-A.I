@@ -76,6 +76,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/whole_text_layout"
             android:background="@drawable/rounded_text_layout"
             android:layout_margin="5dp">
             <FrameLayout
@@ -139,16 +140,16 @@
                 android:text="@string/output_text"
                 android:textSize="12sp"/>
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/transCopy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/ilo_text"
+                android:layout_alignEnd="@+id/ilo_text"
+                android:contentDescription="@string/copy"
+                android:src="@drawable/baseline_save_24"
+                app:backgroundTint="#00796B" />
+
         </RelativeLayout>
     </RelativeLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/transCopy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/copy"
-        android:src="@android:drawable/ic_menu_save" />
-
 </RelativeLayout>
