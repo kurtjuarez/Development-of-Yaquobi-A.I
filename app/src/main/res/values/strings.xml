@@ -6,13 +6,17 @@
     <string name="english_title">English</string>
     <string name="ilocano_title">Ilocano</string>
     <string name="team_description_title">Team Description</string>
-    <string name="team_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dapibus sem nec elit feugiat, a ultrices lorem sodales. Sed rutrum lorem augue, at pellentesque sapien malesuada ut. Aenean at interdum erat. Sed hendrerit quam ullamcorper nisi posuere tristique. Phasellus condimentum enim vitae convallis ultricies. Morbi lacinia egestas nisi, in auctor lorem dignissim sed. Nunc aliquam aliquam aliquam.</string>
+    <string name="team_description">We are Yaquobi AI, a bold and passionate team of Computer Science students committed to creating smart solutions that make a difference. Our project — an Ilocano Speech-to-Text Translator powered by OpenAI’s Whisper Model — is built to break language barriers, promote cultural pride, and improve access to information. \n\nWhat sets us apart? We combine technical skill with creativity, hard work with heart. We don’t just solve problems — we adapt, innovate, and deliver.</string>
     <string name="team_leader">Team Leader</string>
     <string name="documentation_lead">Documentation Lead</string>
     <string name="lead_developer">Lead Developer</string>
     <string name="ui_ux_developer">UI/UX Developer</string>
-    <string name="phone_number">+639123456789</string>
-    <string name="email_address">emailaddress@gmail.com</string>
+    <string name="phone_number">+639306728858</string>
+    <string name="email_address">yaquobi.ai@gmail.com</string>
     <string name="facebook">Yaquobi A.I</string>
     <string name="copy">Copy</string>
+    <string name="galam_full_name">Kirsten Jacob R. Galam</string>
+    <string name="galut_full_name">Quian Vencel A. Galut</string>
+    <string name="adriano_full_name">Gabriel C. Adriano Jr.</string>
+    <string name="juarez_full_name">Kurt Basti A. Juarez</string>
 </resources>
