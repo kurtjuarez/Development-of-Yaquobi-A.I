@@ -9,8 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.ilocanospeech_to_texttranslatorapp.model.RecyclerModel;
 
-import org.checkerframework.checker.units.qual.C;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,20 +48,39 @@ public class DBTranslated extends SQLiteOpenHelper {
     public List<RecyclerModel> getAllTranslated() {
         List<RecyclerModel> translations = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY id DESC", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY id DESC LIMIT 20", null);
 
         if(cursor.moveToFirst()){
             do {
+                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex(ID_COL));
                 @SuppressLint("Range") String timestamp = cursor.getString(cursor.getColumnIndex(SAVED_TIME));
                 @SuppressLint("Range") String englishText = cursor.getString(cursor.getColumnIndex(ENG_TEXT));
                 @SuppressLint("Range") String ilocanoText = cursor.getString(cursor.getColumnIndex(ILO_TEXT));
 
-                translations.add(new RecyclerModel(timestamp, englishText, ilocanoText));
+                translations.add(new RecyclerModel(id, timestamp, englishText, ilocanoText));
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
         return translations;
+    }
+
+    public void deleteTranslationbyID(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("tbl_translated", "id=?", new String[]{String.valueOf(id)});
+        db.close();
+    }
+
+    public int getHistoryNum(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_NAME, null);
+        int c = 0;
+        if (cursor.moveToFirst()){
+            c = cursor.getInt(0);
+        }
+        cursor.close();
+        db.close();
+        return c;
     }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {

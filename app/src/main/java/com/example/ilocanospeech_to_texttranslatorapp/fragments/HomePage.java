@@ -120,8 +120,14 @@ public class HomePage extends Fragment {
             String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
             if (!englishText.equals("Inputted text here.") && !ilocanoText.equals("Translated text here.")) {
-                dbHandler.addTranslatedText(englishText, ilocanoText, timestamp);
-                Toast.makeText(requireContext(), "Saved to history", Toast.LENGTH_SHORT).show();
+                int count = dbHandler.getHistoryNum();
+                if (count >= 20){
+                    Toast.makeText(requireContext(), "Limit reached!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    dbHandler.addTranslatedText(englishText, ilocanoText, timestamp);
+                    Toast.makeText(requireContext(), "Saved to history", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 Toast.makeText(requireContext(), "No valid translation to save", Toast.LENGTH_SHORT).show();
             }
