@@ -19,7 +19,8 @@
             android:layout_alignParentEnd="true"
             android:backgroundTint="@color/Color1"
             android:src="@drawable/baseline_delete_forever_24"
-            app:fabCustomSize="50dp">
+            app:fabCustomSize="50dp"
+            app:tint="@color/white">
         </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
         <TextView

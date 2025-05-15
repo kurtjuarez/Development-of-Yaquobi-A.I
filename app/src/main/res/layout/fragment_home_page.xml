@@ -148,7 +148,8 @@
                 android:layout_alignEnd="@+id/ilo_text"
                 android:contentDescription="@string/copy"
                 android:src="@drawable/baseline_save_24"
-                app:backgroundTint="#00796B" />
+                app:backgroundTint="#00796B"
+                app:tint="@color/white"/>
 
         </RelativeLayout>
     </RelativeLayout>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ilocano Speech-to-Text Translator App</string>
+    <string name="app_name">English-to-Ilocano Translator App</string>
     <string name="enter_text">Enter text here.</string>
     <string name="input_text">Inputted text here.</string>
     <string name="output_text">Translated text here.</string>
