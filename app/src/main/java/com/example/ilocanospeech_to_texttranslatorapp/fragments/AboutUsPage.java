@@ -20,7 +20,7 @@ public class AboutUsPage extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        // Gets the fragment
         view = inflater.inflate(R.layout.fragment_about_us_page, container, false);
 
         return view;
