@@ -22,7 +22,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     Context context;
     List<RecyclerModel> recyclerModels;
     DBTranslated dbTranslated;
-
+    //Getting the context from the recycler model and the translated text database
     public RecyclerAdapter(Context context, List<RecyclerModel> recyclerModels, DBTranslated dbTranslated){
         this.context = context;
         this.recyclerModels = recyclerModels;
@@ -38,6 +38,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return new ViewHolder(view);
     }
 
+    //View for the requirements in the recycler view
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         RecyclerModel model = recyclerModels.get(position);
@@ -55,7 +56,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         });
 
     }
-
+    //Getting the count of the items in the recycler
     @Override
     public int getItemCount() {
         return recyclerModels.size();

@@ -1,7 +1,7 @@
 package com.example.ilocanospeech_to_texttranslatorapp.model;
 
 public class RecyclerModel {
-
+    //Gets the ID, timestamp, english_text and ilocano_text
     private int id;
     private String timestamp;
     private String english_text;

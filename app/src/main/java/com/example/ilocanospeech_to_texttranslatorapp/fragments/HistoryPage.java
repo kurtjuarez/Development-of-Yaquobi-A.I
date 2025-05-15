@@ -27,7 +27,7 @@ public class HistoryPage extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history_page, container, false);
 
-
+        //Recycler View for the history text
         recyclerView = view.findViewById(R.id.recycler_view_name);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

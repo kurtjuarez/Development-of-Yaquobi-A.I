@@ -12,6 +12,7 @@ import com.example.ilocanospeech_to_texttranslatorapp.model.RecyclerModel;
 import java.util.ArrayList;
 import java.util.List;
 
+// Database initialization
 public class DBTranslated extends SQLiteOpenHelper {
     private static final String DB_NAME = "translateddb";
     private static final int DB_VERSION = 1;
@@ -25,6 +26,7 @@ public class DBTranslated extends SQLiteOpenHelper {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
+    //Initialize the Database
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String query = "CREATE TABLE " + TABLE_NAME + " (" + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -32,7 +34,7 @@ public class DBTranslated extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL(query);
     }
-
+    //Adding a translated text to the database based on its parameters
     public void addTranslatedText(String englishText, String ilocanoText, String timeStamp) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -44,7 +46,7 @@ public class DBTranslated extends SQLiteOpenHelper {
         sqLiteDatabase.insert(TABLE_NAME, null, values);
         sqLiteDatabase.close();
     }
-
+    //Get the saved translated text in the database based on its cursors
     public List<RecyclerModel> getAllTranslated() {
         List<RecyclerModel> translations = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -64,13 +66,13 @@ public class DBTranslated extends SQLiteOpenHelper {
         db.close();
         return translations;
     }
-
+    //Delete function in the database based on the translated text ID
     public void deleteTranslationbyID(int id){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("tbl_translated", "id=?", new String[]{String.valueOf(id)});
         db.close();
     }
-
+    //Get the number of the saved histor
     public int getHistoryNum(){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_NAME, null);
@@ -82,6 +84,7 @@ public class DBTranslated extends SQLiteOpenHelper {
         db.close();
         return c;
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);

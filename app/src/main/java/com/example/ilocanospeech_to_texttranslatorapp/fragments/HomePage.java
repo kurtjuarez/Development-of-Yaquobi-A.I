@@ -28,6 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.ilocanospeech_to_texttranslatorapp.BuildConfig;
 import com.example.ilocanospeech_to_texttranslatorapp.R;
 import com.example.ilocanospeech_to_texttranslatorapp.asr.Recorder;
 import com.example.ilocanospeech_to_texttranslatorapp.asr.Whisper;
@@ -90,7 +91,7 @@ public class HomePage extends Fragment {
     private TextView engT, iloT;
     private static final String GOOGLE_TRANSLATE_API_URL = "https://translation.googleapis.com/language/translate/v2";
 
-    private final String api = "AIzaSyBAqkkzBG9Be3-804IcD34L3nr0MHWFWn0";
+    private static final String api = "AIzaSyBAqkkzBG9Be3-804IcD34L3nr0MHWFWn0";
 
     // Saved History variables
     private FloatingActionButton transCopy;
@@ -144,13 +145,14 @@ public class HomePage extends Fragment {
             }
         });
 
+        //Call for Record Class
         mRecord = new Recorder(requireContext());
         mRecord.setListener(new Recorder.RecorderListener() {
             @Override
             public void onUpdateReceived(String message) {
                 Log.d(TAG, "Recording update: " + message);
             }
-
+        //Whisper receives
             @Override
             public void onDataReceived(float[] samples) {
                 if (mWhisper != null) {
@@ -159,10 +161,12 @@ public class HomePage extends Fragment {
             }
         });
 
+        //Get ID for the variables of texts.
         editTextIn = view.findViewById(R.id.editTextInput);
         engT = view.findViewById(R.id.eng_text);
         iloT = view.findViewById(R.id.ilo_text);
 
+        //When the input value is null, it changes its values
         editTextIn.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -191,7 +195,7 @@ public class HomePage extends Fragment {
         return view;
     }
 
-
+    //Initialization of the Model
     private void initModel(File modelFile) {
         boolean isMultilingualModel = !modelFile.getName().endsWith(ENGLISH_ONLY_MODEL_EXTENSION);
         String vocabFileName = isMultilingualModel ? MULTILINGUAL_VOCAB_FILE : ENGLISH_ONLY_VOCAB_FILE;
@@ -212,6 +216,7 @@ public class HomePage extends Fragment {
         });
     }
 
+    //Microphone recording function
     @SuppressLint("UseCompatLoadingForDrawables")
     private void startRecording() {
         File waveFile = new File(sdcardDataFolder, WaveUtil.RECORDING_FILE);
@@ -228,7 +233,7 @@ public class HomePage extends Fragment {
             Toast.makeText(requireContext(), "Recording...", Toast.LENGTH_SHORT).show();
         }
     }
-
+    //Stop Record Function
     private void stopRecording() {
         mRecord.stop();
         if (selectedWaveFile != null) {
@@ -244,7 +249,7 @@ public class HomePage extends Fragment {
             }
         }
     }
-
+    //Transcribe the wav file
     private void startTranscription(String waveFilePath) {
         if (mWhisper != null) {
             mWhisper.setFilePath(waveFilePath);
@@ -253,6 +258,7 @@ public class HomePage extends Fragment {
         }
     }
 
+    //Google API Async Translation Text
     private void asyncTranslateText(String input) {
         new Thread(() -> {
             try {
@@ -287,6 +293,7 @@ public class HomePage extends Fragment {
         }).start();
     }
 
+    //Copies the assets to the sdcard (ex. wav, tflite, bin, bcm files)
     private static void copyAssetsToSdcard(Context context, File destFolder, String[] extensions) {
         AssetManager assetManager = context.getAssets();
         try {
