@@ -6,7 +6,7 @@
     <string name="english_title">English</string>
     <string name="ilocano_title">Ilocano</string>
     <string name="team_description_title">Team Description</string>
-    <string name="team_description">We are Yaquobi AI, a bold and passionate team of Computer Science students committed to creating smart solutions that make a difference. Our project — an Ilocano Speech-to-Text Translator powered by OpenAI’s Whisper Model — is built to break language barriers, promote cultural pride, and improve access to information. \n\nWhat sets us apart? We combine technical skill with creativity, hard work with heart. We don’t just solve problems — we adapt, innovate, and deliver.</string>
+    <string name="team_description">We are Yaquobi A.I, a bold and passionate team of Computer Science students committed to creating smart solutions that make a difference. Our project — an Ilocano Speech-to-Text Translator powered by OpenAI’s Whisper Model — is built to break language barriers, promote cultural pride, and improve access to information. \n\nWhat sets us apart? We combine technical skill with creativity, hard work with heart. We don’t just solve problems — we adapt, innovate, and deliver.</string>
     <string name="team_leader">Team Leader</string>
     <string name="documentation_lead">Documentation Lead</string>
     <string name="lead_developer">Lead Developer</string>
